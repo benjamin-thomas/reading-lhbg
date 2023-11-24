@@ -19,22 +19,37 @@ runghc ./hello.hs > ./hello.html
 
 -}
 
+el :: String -> String -> String
+el tag content =
+  "<" <> tag <> ">" <> content <> "</" <> tag <> ">"
+
 html_ :: String -> String
-html_ content =
-  "<html>" <> content <> "</html>"
+html_ =
+  el "html"
 
 head_ :: String -> String
-head_ content =
-  "<head>" <> content <> "</head>"
+head_ =
+  el "head"
 
 title_ :: String -> String
-title_ content =
-  "<title>" <> content <> "</title>"
+title_ =
+  el "title"
 
 body_ :: String -> String
-body_ content =
-  "<body>" <> content <> "</body>"
+body_ =
+  el "body"
 
+p_ :: String -> String
+p_ = el "p"
+
+h1_ :: String -> String
+h1_ = el "h1"
+
+{- |
+
+>>> makeHtml "TITLE" "BODY"
+"<html><head><title>TITLE</title></head><body>BODY</body></html>"
+-}
 makeHtml :: String -> String -> String
 makeHtml title body =
   html_
@@ -43,7 +58,9 @@ makeHtml title body =
 
 myHtml :: String
 myHtml =
-  makeHtml "My page title" "My page content"
+  makeHtml
+    "Learn Haskell by building a Blog Generator"
+    (h1_ "A title" <> p_ "A paragraph")
 
 main :: IO ()
 main =
