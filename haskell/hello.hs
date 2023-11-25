@@ -72,7 +72,6 @@ myHtml =
     "Learn Haskell by building a Blog Generator"
     (h1_ "A title" <> p_ "A paragraph")
 
-
 main :: IO ()
 main =
   putStrLn myHtml
