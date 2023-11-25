@@ -1,5 +1,15 @@
 {-
 
+Workflow:
+
+Terminal 1:
+echo ./hello.hs | entr tmux send-keys -t reading-lhbg:0.2 C-l ":reload" Enter
+
+Terminal 2:
+ghci ./hello.hs
+
+---
+
 To run the program, we first compile it with `ghc ./hello.hs`.
 
 This generates:
@@ -61,6 +71,7 @@ myHtml =
   makeHtml
     "Learn Haskell by building a Blog Generator"
     (h1_ "A title" <> p_ "A paragraph")
+
 
 main :: IO ()
 main =
