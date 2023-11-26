@@ -39,7 +39,7 @@ myHtml =
   html_
     "My title"
     ( append_
-        (h1_ "Heading")
+        (h1_ "A <weird> Heading")
         ( append_
             (p_ "Paragraph #1")
             (p_ "Paragraph #2")
@@ -49,4 +49,3 @@ myHtml =
 main :: Effect Unit
 main =
   log (render myHtml)
-

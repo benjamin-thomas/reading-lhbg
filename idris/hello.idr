@@ -24,7 +24,7 @@ idris2 ./hello.idr -o hello && ./build/exec/hello
 myHtml : Html
 myHtml =
   html_
-    "My title"
+    "My <weird> title"
     ( append_
       (p_ "Paragraph #1")
       (p_ "Paragraph #2")

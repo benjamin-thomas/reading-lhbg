@@ -5,7 +5,7 @@ let myHtml =
     html_
       ~title:"My title"
       (append_
-        (h1_ "Heading")
+        (h1_ "My <weird> Heading")
         (append_
           (p_ "Paragraph 1")
           (p_ "Paragraph 2")

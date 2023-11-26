@@ -1,5 +1,7 @@
 module Html
 
+import Data.String
+
 export
 data Html = MkHtml String
 
@@ -25,13 +27,28 @@ el : String -> String -> String
 el tag content =
   "<" ++ tag ++ ">" ++ content ++ "</" ++ tag ++ ">"
 
+escape : String -> String
+escape str =
+  let
+    escapeChar : Char -> String
+    escapeChar c =
+      case c of
+        '<' => "&lt;"
+        '>' => "&gt;"
+        '&' => "&amp;"
+        '"' => "&quot;"
+        '\'' => "&#39;"
+        _ => String.singleton c
+  in
+  concat . map escapeChar $ unpack str
+   
 export
 h1_ : String -> Structure
-h1_ = MkStructure . el "h1"
+h1_ = MkStructure . el "h1" . escape
 
 export
 p_ : String -> Structure
-p_ = MkStructure . el "p"
+p_ = MkStructure . el "p" . escape
 
 export
 html_ : Title -> Structure -> Html
@@ -39,7 +56,7 @@ html_ title content =
   MkHtml
     ( el
         "html"
-        ( el "head" (el "title" title)
+        ( el "head" (el "title" $ escape title)
           ++ el "body" (toString content)
         )
     )

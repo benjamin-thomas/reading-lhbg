@@ -23,7 +23,7 @@ myHtml =
   html_
     "My title"
     ( append_
-        (h1_ "Heading")
+        (h1_ "Heading <noes>!")
         ( append_
             (p_ "Paragraph #1")
             (p_ "Paragraph #2")
