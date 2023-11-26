@@ -16,23 +16,3 @@ let html_ ~title (Structure content) : html =
   let body = el "body" content in
   Html (el "html" (head ^ body))
 ;;
-
-let myHtml =
-  html_
-    ~title:"My title"
-    ( append_
-        (h1_ "Heading")
-        (append_
-          (p_ "Paragraph 1")
-          (p_ "Paragraph 2")
-        )
-    )
-[@@ocamlformat "disable"]
-
-(* Printing the generated HTML *)
-let () =
-  ()
-  ; print_newline ()
-  ; print_newline ()
-  ; print_endline @@ render myHtml
-;;
