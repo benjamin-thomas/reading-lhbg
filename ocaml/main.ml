@@ -1,9 +1,11 @@
+open Printf
+
 type html = Html of string
 type structure = Structure of string
 
 let append_ (Structure a) (Structure b) = Structure (a ^ b)
 let render (Html s) = s
-let el tag content = "<" ^ tag ^ ">" ^ content ^ "</" ^ tag ^ ">"
+let el tag content = sprintf "<%s>%s</%s>" tag content tag
 
 (* NOTE: since variant constructors are note functions in OCaml, it doesn't make sens trying to compose at this stage. *)
 let h1_ s = Structure (el "h1" s)
