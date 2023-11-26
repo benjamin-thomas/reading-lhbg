@@ -1,26 +1,36 @@
-(* Create any HTML *)
+type html = Html of string
+type structure = Structure of string
+
+let append_ (Structure a) (Structure b) = Structure (a ^ b)
+let render (Html s) = s
 let el tag content = "<" ^ tag ^ ">" ^ content ^ "</" ^ tag ^ ">"
 
-(* Html helpers *)
-let html_ = el "html"
-let head_ = el "head"
-let title_ = el "title"
-let body_ = el "body"
-let p_ = el "p"
-let h1_ = el "h1"
+(* NOTE: since variant constructors are note functions in OCaml, it doesn't make sens trying to compose at this stage. *)
+let h1_ s = Structure (el "h1" s)
+let p_ s = Structure (el "p" s)
 
-(* Helper functions *)
-let makeHtml title body = html_ (head_ (title_ title) ^ body_ body)
-
-(* Build the final HTML *)
-let myHtml =
-  makeHtml "Learn OCaml by building a Blog Generator" (h1_ "A title" ^ p_ "A paragraph")
+let html_ ~title (Structure content) : html =
+  let head = el "head" (el "title" title) in
+  let body = el "body" content in
+  Html (el "html" (head ^ body))
 ;;
+
+let myHtml =
+  html_
+    ~title:"My title"
+    ( append_
+        (h1_ "Heading")
+        (append_
+          (p_ "Paragraph 1")
+          (p_ "Paragraph 2")
+        )
+    )
+[@@ocamlformat "disable"]
 
 (* Printing the generated HTML *)
 let () =
   ()
   ; print_newline ()
   ; print_newline ()
-  ; print_endline myHtml
+  ; print_endline @@ render myHtml
 ;;

@@ -5,47 +5,64 @@ module Main
 Workflow:
 
 Terminal 1:
-echo ./hello.idr | entr tmux send-keys -t reading-lhbg:1.2 C-l ":reload" Enter
+echo ./hello.idr | entr tmux send-keys -t reading-lhbg:1.2 C-l ":reload" Enter "myHtml" Enter
 
 Terminal 2:
 rlwrap idris2 ./hello.idr
 
+---
+
+Compile and run
+
+idris2 ./hello.idr -o hello && ./build/exec/hello
+
 -}
+
+data Html = MkHtml String
+data Structure = MkStructure String
+
+-- A type alias!
+Title : Type
+Title = String
+
+append_ : Structure -> Structure -> Structure
+append_ (MkStructure a) (MkStructure b) = MkStructure $ a ++ b
+
+toString : Structure -> String
+toString (MkStructure s) = s
+
+render : Html -> String
+render (MkHtml s) = s
 
 el : String -> String -> String
 el tag content =
   "<" ++ tag ++ ">" ++ content ++ "</" ++ tag ++ ">"
 
-html_ : String -> String
-html_ = el "html"
+h1_ : String -> Structure
+h1_ = MkStructure . el "h1"
 
-head_ : String -> String
-head_ = el "head"
+p_ : String -> Structure
+p_ = MkStructure . el "p"
 
-title_ : String -> String
-title_ = el "title"
+html_ : Title -> Structure -> Html
+html_ title content =
+  MkHtml
+    ( el 
+        "html" 
+        ( el "head" (el "title" title)
+          ++ el "body" (toString content)
+        )
+    )
 
-body_ : String -> String
-body_ = el "body"
-
-h1_ : String -> String
-h1_ = el "h1"
-
-makeHtml : String -> String -> String
-makeHtml title body =
-  html_
-    $ head_ (title_ title)
-    ++ body_ body
-
-p_ : String -> String
-p_ = el "p"
-
-myHtml : String
+myHtml : Html
 myHtml =
-  makeHtml
-    "Learn Idriss by building a Blog Generator"
-    (h1_ "A title" ++ p_ "A paragraph")
+  html_
+    "My title"
+    ( append_
+      (p_ "Paragraph #1")
+      (p_ "Paragraph #2")
+    )
 
 main : IO ()
 main =
-  putStrLn myHtml
+  putStrLn (render myHtml)

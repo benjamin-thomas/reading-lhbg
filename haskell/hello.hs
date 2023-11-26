@@ -27,51 +27,73 @@ We'll also redirect the output, like such:
 runghc ./hello.hs > ./hello.html
 ```
 
+---
+
+## A note on function application.
+
+When we want to check if/why combining functions type-checks, here's how to proceed:
+
+First we look at the type signature of compose:
+
+  (b -> c) -> (a -> b) -> a -> c
+
+Then we replace the functions we feed it with: the type variables must match
+
+   0) For composing: `Structure . el "p"`
+   1) (.) :: (b -> c) -> (a -> b) -> a -> c
+   2) Looking at both functions, we note that:
+         - b ~ String
+         - c ~ Structure
+         - a ~ String
+   3) (.) :: (String -> Structure) -> (String -> String) -> (String -> Structure)
+
 -}
+
+newtype Html = Html String
+newtype Structure = Structure String deriving (Show)
+
+type Title = String -- a type alias
+
+append_ :: Structure -> Structure -> Structure
+append_ (Structure a) (Structure b) = Structure $ a <> b
+
+render :: Html -> String
+render (Html str) = str
 
 el :: String -> String -> String
 el tag content =
   "<" <> tag <> ">" <> content <> "</" <> tag <> ">"
 
-html_ :: String -> String
-html_ =
-  el "html"
+p_ :: String -> Structure
+p_ =
+  Structure . el "p"
 
-head_ :: String -> String
-head_ =
-  el "head"
+h1_ :: String -> Structure
+h1_ =
+  Structure . el "h1"
 
-title_ :: String -> String
-title_ =
-  el "title"
+html_ :: Title -> Structure -> Html
+html_ title (Structure content) =
+  Html
+    ( el
+        "html"
+        ( el "head" (el "title" title)
+            <> el "body" content
+        )
+    )
 
-body_ :: String -> String
-body_ =
-  el "body"
-
-p_ :: String -> String
-p_ = el "p"
-
-h1_ :: String -> String
-h1_ = el "h1"
-
-{- |
-
->>> makeHtml "TITLE" "BODY"
-"<html><head><title>TITLE</title></head><body>BODY</body></html>"
--}
-makeHtml :: String -> String -> String
-makeHtml title body =
-  html_
-    $ head_ (title_ title)
-    <> body_ body
-
-myHtml :: String
+myHtml :: Html
 myHtml =
-  makeHtml
-    "Learn Haskell by building a Blog Generator"
-    (h1_ "A title" <> p_ "A paragraph")
+  html_
+    "My title"
+    ( append_
+        (h1_ "Heading")
+        ( append_
+            (p_ "Paragraph #1")
+            (p_ "Paragraph #2")
+        )
+    )
 
 main :: IO ()
 main =
-  putStrLn myHtml
+  putStrLn (render myHtml)
