@@ -7,8 +7,15 @@ let myHtml =
       (append_
         (h1_ "My <weird> Heading")
         (append_
-          (p_ "Paragraph 1")
-          (p_ "Paragraph 2")
+          (append_
+            (p_ "Paragraph 1")
+            (p_ "Paragraph 2")
+          )
+          (ul_ [ p_ "A"
+               ; p_ "B"
+               ; p_ "C"
+               ]
+          )
         )
       )
   )

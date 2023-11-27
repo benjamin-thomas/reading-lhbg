@@ -7,7 +7,7 @@ import Prelude
 
 import Effect (Effect)
 import Effect.Console (log)
-import Html (Html, append_, h1_, html_, p_, render)
+import Html (Html, append_, h1_, html_, p_, render, ul_)
 
 {-
 
@@ -41,8 +41,16 @@ myHtml =
     ( append_
         (h1_ "A <weird> Heading")
         ( append_
-            (p_ "Paragraph #1")
-            (p_ "Paragraph #2")
+            ( append_
+                (p_ "Paragraph #1")
+                (p_ "Paragraph #2")
+            )
+            ( ul_
+                [ p_ "A"
+                , p_ "B"
+                , p_ "C"
+                ]
+            )
         )
     )
 

@@ -5,6 +5,8 @@ module Html (
     html_,
     p_,
     h1_,
+    ul_,
+    ol_,
     append_,
     render,
 ) where
@@ -47,9 +49,22 @@ p_ :: String -> Structure
 p_ =
     Structure . el "p" . escape
 
+code_ :: String -> Structure
+code_ =
+    Structure . el "pre" . escape
+
 h1_ :: String -> Structure
 h1_ =
     Structure . el "h1" . escape
+
+getString (Structure x) = x
+ul_ :: [Structure] -> Structure
+ul_ =
+    Structure . el "ul" . concatMap (el "li" . getString)
+
+ol_ :: [Structure] -> Structure
+ol_ =
+    Structure . el "ol" . concatMap (el "li" . getString)
 
 html_ :: Title -> Structure -> Html
 html_ title (Structure content) =

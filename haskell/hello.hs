@@ -1,4 +1,4 @@
-import Html (Html, append_, h1_, html_, p_, render)
+import Html (Html, append_, h1_, html_, ol_, p_, render, ul_)
 
 {-
 
@@ -25,8 +25,14 @@ myHtml =
     ( append_
         (h1_ "Heading <noes>!")
         ( append_
-            (p_ "Paragraph #1")
-            (p_ "Paragraph #2")
+            ( append_
+                (p_ "Paragraph #1")
+                (p_ "Paragraph #2")
+            )
+            ( append_
+                (ul_ [p_ "A", p_ "B", p_ "C"])
+                (ol_ [p_ "D", p_ "E", p_ "F"])
+            )
         )
     )
 

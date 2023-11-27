@@ -51,6 +51,16 @@ p_ : String -> Structure
 p_ = MkStructure . el "p" . escape
 
 export
+ul_ : List Structure -> Structure
+ul_ = 
+  MkStructure . el "ul" . concat . map (el "li" . toString)
+
+export
+ol_ : List Structure -> Structure
+ol_ = 
+  MkStructure . el "ol" . concat . map (el "li" . toString)
+
+export
 html_ : Title -> Structure -> Html
 html_ title content =
   MkHtml

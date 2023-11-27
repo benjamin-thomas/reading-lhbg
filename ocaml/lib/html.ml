@@ -24,6 +24,17 @@ let escape str =
 (* NOTE: since variant constructors are note functions in OCaml, it doesn't make sens trying to compose at this stage. *)
 let h1_ s = Structure (el "h1" @@ escape s)
 let p_ s = Structure (el "p" @@ escape s)
+let code_ s = Structure (el "pre" @@ escape s)
+
+let ul_ items =
+  let lst = List.map (fun (Structure x) -> el "li" x) items in
+  Structure (el "ul" @@ String.concat "" lst)
+;;
+
+let ol_ items =
+  let lst = List.map (fun (Structure x) -> el "li" x) items in
+  Structure (el "ol" @@ String.concat "" lst)
+;;
 
 let html_ ~title (Structure content) : html =
   let head = el "head" (el "title" @@ escape title) in

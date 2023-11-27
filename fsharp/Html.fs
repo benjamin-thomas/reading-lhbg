@@ -8,8 +8,9 @@ let render (Html s) = s
 
 let private el tag content = $"<%s{tag}>%s{content}</%s{tag}>"
 
-let private escape (str:string) : string =
-    let escape_char = function
+let private escape (str: string) : string =
+    let escape_char =
+        function
         | '<' -> "&lt;"
         | '>' -> "&gt;"
         | '&' -> "&amp;"
@@ -25,6 +26,15 @@ let private escape (str:string) : string =
 
 let h1_ = Structure << el "h1" << escape
 let p_ = Structure << el "p" << escape
+let code_ = Structure << el "pre" << escape
+
+let ul_ =
+    Structure
+    << el "ul"
+    << String.concat ""
+    << List.map (fun (Structure x) -> el "li" x)
 
 let html_ title (Structure content) =
-    Html(el "html" (el "head" (el "title" <| escape title) + el "body" content))
+    let head = el "head" (el "title" <| escape title)
+    let body = el "body" content
+    Html(el "html" (head + body))

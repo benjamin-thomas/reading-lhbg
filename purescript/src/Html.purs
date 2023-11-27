@@ -5,6 +5,9 @@ module Html
   , h1_
   , html_
   , p_
+  , ul_
+  , ol_
+  , code_
   , render
   ) where
 
@@ -28,6 +31,9 @@ append_ (Structure a) (Structure b) = Structure $ a <> b
 render :: Html -> String
 render (Html s) = s
 
+toString :: Structure -> String
+toString (Structure s) = s
+
 escape :: String -> String
 escape =
   let
@@ -50,8 +56,19 @@ el tag content =
 p_ :: String -> Structure
 p_ = Structure <<< el "p" <<< escape
 
+code_ :: String -> Structure
+code_ = Structure <<< el "pre" <<< escape
+
 h1_ :: String -> Structure
 h1_ = Structure <<< el "h1" <<< escape
+
+ul_ :: Array Structure -> Structure
+ul_ =
+  Structure <<< el "ul" <<< joinWith "" <<< map (el "li" <<< toString)
+
+ol_ :: Array Structure -> Structure
+ol_ =
+  Structure <<< el "ol" <<< joinWith "" <<< map (el "li" <<< toString)
 
 html_ :: Title -> Structure -> Html
 html_ title (Structure content) =
