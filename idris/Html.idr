@@ -70,4 +70,3 @@ html_ title content =
           ++ el "body" (toString content)
         )
     )
-

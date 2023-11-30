@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Markup.fs" />
     <Compile Include="Html.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
