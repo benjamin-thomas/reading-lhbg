@@ -1,4 +1,4 @@
-import Html (Html, append_, h1_, html_, ol_, p_, render, ul_)
+import Html (Html, h1_, html_, ol_, p_, render, ul_)
 
 {-
 
@@ -14,28 +14,24 @@ ghci ./hello.hs
 
 To run the program, use:
 
-runghc ./hello.hs
+runghc -Wall ./hello.hs
+runghc -Wall ./hello
 
 -}
 
 myHtml :: Html
 myHtml =
-  html_
-    "My title"
-    ( append_
-        (h1_ "Heading <noes>!")
-        ( append_
-            ( append_
-                (p_ "Paragraph #1")
-                (p_ "Paragraph #2")
-            )
-            ( append_
-                (ul_ [p_ "A", p_ "B", p_ "C"])
-                (ol_ [p_ "D", p_ "E", p_ "F"])
-            )
+    html_
+        "My title"
+        ( h1_ "Heading <noes>!"
+            <> ( p_ "Paragraph #1"
+                    <> p_ "Paragraph #2"
+               )
+            <> ( ul_ [p_ "A", p_ "B", p_ "C"]
+                    <> ol_ [p_ "D", p_ "E", p_ "F"]
+               )
         )
-    )
 
 main :: IO ()
 main =
-  putStrLn (render myHtml)
+    putStrLn (render myHtml)

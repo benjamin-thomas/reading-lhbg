@@ -7,7 +7,7 @@ module Html (
     h1_,
     ul_,
     ol_,
-    append_,
+    code_,
     render,
 ) where
 
@@ -16,8 +16,11 @@ newtype Structure = Structure String deriving (Show)
 
 type Title = String -- a type alias
 
-append_ :: Structure -> Structure -> Structure
-append_ (Structure a) (Structure b) = Structure $ a <> b
+-- append_ :: Structure -> Structure -> Structure
+-- append_ (Structure a) (Structure b) = Structure $ a <> b
+instance Semigroup Structure where
+    (<>) :: Structure -> Structure -> Structure
+    (Structure a) <> (Structure b) = Structure $ a <> b
 
 {- |
 >>> escape "<hello>"
@@ -57,7 +60,9 @@ h1_ :: String -> Structure
 h1_ =
     Structure . el "h1" . escape
 
+getString :: Structure -> String
 getString (Structure x) = x
+
 ul_ :: [Structure] -> Structure
 ul_ =
     Structure . el "ul" . concatMap (el "li" . getString)
